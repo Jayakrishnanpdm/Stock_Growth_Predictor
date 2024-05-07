@@ -62,6 +62,4 @@ def get_actual_and_predicted_data(model):
     X_test = predict_data[['open', 'high', 'low', 'volume']]
     y_test = np.array([predict_data['close']])
     y_pred = np.array([model.predict(X_test)])
-    print(y_pred[0])
-    print(y_test[0])
     return metrics.mean_squared_error(y_test, y_pred), { 'Actual': y_test[0], 'Predicted': y_pred[0]}
