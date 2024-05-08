@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Growth Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+{% if message == "Success" %}
+</body>
+    <p id="actual" style="display: none;">{{data.Actual}}</p>
+    <p id="predicted" style="display: none;">{{data.Predicted}}</p>
+    <button onclick="window.location.href='/search'" class="p-2.5 mt-4 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Go back to search</button>
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Model Mean Square Error: {{mean_squared_error}}</h5>
+                <div class="chart-container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var actualData = document.getElementById('actual').innerText.replace(/\[|\]/g, '').split(' ').map(Number).filter(num => num !== 0); 
+        var predictedData = document.getElementById('predicted').innerText.replace(/\[|\]/g, '').split(' ').map(Number).filter(num => num !== 0);
+
+        var ctx = document.getElementById('lineChart').getContext('2d');
+        var lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: actualData.map((_, index) => index + 1),
+                datasets: [{
+                    label: 'Actual',
+                    data: actualData,
+                    borderColor: 'blue',
+                    fill: false
+                }, {
+                    label: 'Predicted',
+                    data: predictedData,
+                    borderColor: 'red',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true, // Add this line to disable maintaining aspect ratio
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Data Point'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+{% endif %}
+{% if message == "Failure" %}
+    <p>Model not found or Something went wrong</p>
+{% endif %}
+</body>
+</html>
