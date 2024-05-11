@@ -9,6 +9,8 @@ class StockSymbols(Enum):
     ALPHABET = "GOOGL"
     IBM = "IBM"
     TESLA = "TSLA"
+    INFOSYS ="INFY"
+
 
     def get_all_symbols():
         return {symbol.name: symbol.value for symbol in StockSymbols}

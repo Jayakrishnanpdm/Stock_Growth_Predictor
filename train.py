@@ -9,11 +9,14 @@ API_KEY = config("API_KEY")
 os.makedirs("data", exist_ok=True)
 
 for key, value in StockSymbols.get_all_symbols().items():
-    URL = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&datatype=csv&outputsize=full&symbol={value}&apikey={API_KEY}"
     folderpath = f"data/{key}"
-    os.makedirs(folderpath, exist_ok=True)
-    response = requests.get(URL)
-    with open(f"{folderpath}/data.csv", "wb") as file:
-        file.write(response.content)
-    model = StockTrainModel().all_operations(folderpath)
-    print(f"Model trained for {key}")
+    try:
+        os.makedirs(folderpath)
+        URL = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&datatype=csv&outputsize=full&symbol={value}&apikey={API_KEY}"
+        response = requests.get(URL)
+        with open(f"{folderpath}/data.csv", "wb") as file:
+            file.write(response.content)
+        model = StockTrainModel().all_operations(folderpath)
+        print(f"Model trained for {key}")
+    except Exception:
+        pass

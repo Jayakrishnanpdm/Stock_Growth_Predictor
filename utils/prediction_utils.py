@@ -44,7 +44,7 @@ def predict_stock(company):
         raise ValueError("API Error")
     with open(f"{folderpath}/_model.pkl", 'rb') as file:
         model = pickle.load(file)
-    X_test = np.array([data['1. open'], data['2. high'], data['3. low'], data['5. volume']]).reshape(1, -1)
+    X_test = pd.DataFrame({'open': [data['1. open']], 'high': [data['2. high']], 'low': [data['3. low']], 'volume': [data['5. volume']]})
     return model.predict(X_test)[0], data
 
 
